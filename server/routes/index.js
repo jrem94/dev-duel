@@ -2,8 +2,10 @@ import { Router } from 'express'
 import axios from 'axios'
 import validate from 'express-validation'
 import token from '../../token'
+import { mapper } from '../lib/mapping'
 
 import validation from './validation'
+// import { mapper } from '../lib/mapping'
 
 export default () => {
   let router = Router()
@@ -26,6 +28,7 @@ export default () => {
 
   /** GET /api/user/:username - Get user */
   router.get('/user/:username', validate(validation.user), (req, res) => {
+    // learn to use path variable
     console.log(req.params.username)
     // TODO Fetch data for user specified in path variable parse/map data to appropriate structure and return as JSON object
     axios
@@ -34,7 +37,8 @@ export default () => {
           Authorization: token
         }
       })
-      .then(({ data }) => res.json(data))
+      .then(({ data }) => mapper(data))
+      .then(data => res.json(data))
   })
 
   /** GET /api/users? - Get users */
