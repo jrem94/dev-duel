@@ -5,17 +5,12 @@ import token from '../../token'
 import { mapper } from '../lib/mapping'
 
 import validation from './validation'
-// import { mapper } from '../lib/mapping'
 
 export default () => {
   let router = Router()
 
-  /** GET /health-check - Check service health */
   router.get('/health-check', (req, res) => res.send('OK'))
 
-  // The following is an example request.response using axios and the
-  // express res.json() function
-  /** GET /api/rate_limit - Get github rate limit for your token */
   router.get('/rate', (req, res) => {
     axios
       .get(`http://api.github.com/rate_limit`, {
@@ -26,11 +21,8 @@ export default () => {
       .then(({ data }) => res.json(data))
   })
 
-  /** GET /api/user/:username - Get user */
   router.get('/user/:username', validate(validation.user), (req, res) => {
-    // learn to use path variable
     console.log(req.params.username)
-    // TODO Fetch data for user specified in path variable parse/map data to appropriate structure and return as JSON object
     axios
       .get('https://api.github.com/users/' + `${req.params.username}`, {
         headers: {
@@ -55,9 +47,3 @@ export default () => {
 
   return router
 }
-
-/*
-Get user JSON and convert into appropriate object.
-Get two users JSON and convert into approptiate object. This will likely require a promise.all(user1, user2). Then
-apply logic to determine who wins and trigger a visual on the winner.
-*/

@@ -1,42 +1,38 @@
-/* eslint-disable no-undef */
 $('form').submit(() => {
   const username = $('form input').val()
   console.log(`examining ${username}`)
 
-  // Fetch data for given user
-  // (https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
   fetch(`${USER_URL}/${username}`)
-    .then(response => response.json()) // Returns parsed json data from response body as promise
+    .then(response => response.json())
     .then(data => {
       console.log(`Got data for ${username}`)
       console.log(data)
       const profile = data
-      $('.username').html(`${username}`)
-      $('.full-name').html(`${profile.fullname}`)
-      $('.location').html(`${profile.location}`)
-      $('.email').html(`${profile.email}`)
-      $('.bio').html(`${profile.bio}`)
-      $('.avatar').attr('src', `${profile.avatar}`)
-      // $('.titles').html(`${profile.titles}`)
-      // $('.favorite-language').html(`${profile.favorite_language}`)
-      // $('.total-stars').html(`${profile.total_stars}`)
-      // $('.most-starred').html(`${profile.most_starred}`)
-      $('.public-repos').html(`${profile.public_repos}`)
-      // $('.perfect-repos').html(`${profile.perfect_repos}`)
-      $('.followers').html(`${profile.followers}`)
-      $('.following').html(`${profile.following}`)
+      $('.user-error').addClass('hide')
+      $('.username').html(username || 'username: N/A')
+      $('.full-name').html(profile.fullname || 'fullname: N/A')
+      $('.location').html(profile.location || 'location: N/A')
+      $('.email').html(profile.email || 'email: N/A')
+      $('.bio').html(profile.bio || 'bio: N/A')
+      $('.avatar').attr('src', profile.avatar)
+      // $('.titles').html(profile.email || 'email: N/A')
+      // $('.favorite-language').html(profile.email || 'email: N/A')
+      // $('.total-stars').html(profile.email || 'email: N/A')
+      // $('.most-starred').html(profile.email || 'email: N/A')
+      $('.public-repos').html(profile.public_repos || 'public repos: N/A')
+      // $('.perfect-repos').html(profile.email || 'email: N/A')
+      $('.followers').html(profile.followers || 'followers: N/A')
+      $('.following').html(profile.following || 'following: N/A')
 
-      $('.user-results').removeClass('hide') // Display '.user-results' element
+      $('.user-results').removeClass('hide')
     })
     .catch(err => {
       console.log(`Error getting data for ${username}`)
       console.log(err)
-      /*
-        TODO
-        If there is an error finding the user, instead toggle the display of the '.user-error' element
-        and populate it's inner span '.error' element with an appropriate error message
-      */
+      $('.user-results').addClass('hide')
+      $('.error').html(err)
+      $('.user-error').removeClass('hide')
     })
 
-  return false // return false to prevent default form submission
+  return false
 })
