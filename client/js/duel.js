@@ -5,7 +5,6 @@ $('form').submit(() => {
   fetch(`${USER_URL}s?username=${leftDuelist}&username=${rightDuelist}`)
     .then(response => response.json())
     .then(data => {
-      console.log(data[0])
       let profile = data[0]
       $('.duel-error').addClass('hide')
 
@@ -24,7 +23,6 @@ $('form').submit(() => {
       $('.left .followers').html(profile.followers || 'followers: N/A')
       $('.left .following').html(profile.following || 'following: N/A')
       $('.left-score').html(getRoll())
-      console.log($('.left-score').text())
 
       $('.user-results .right').removeClass('hide')
       $('.duel-container').removeClass('hide')
@@ -70,11 +68,8 @@ const getRoll = () => {
 const compareScores = () => {
   const leftScore = parseInt($('.left-score').text())
   const rightScore = parseInt($('.right-score').text())
-  console.log(leftScore)
-  console.log(rightScore)
 
   if (leftScore > rightScore) {
-    console.log('left!')
     $('.user-results.right').removeClass('draw')
     $('.user-results.left').removeClass('draw')
     $('.user-results.right').removeClass('winner')
