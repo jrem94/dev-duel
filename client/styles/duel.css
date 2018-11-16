@@ -60,3 +60,8 @@ span.username {
     justify-content: flex-end;
     white-space: nowrap;
 }
+
+.avatar {
+    max-width: 300px;
+    max-height: 300px;
+}

@@ -32,17 +32,28 @@ export default () => {
       .then(data => res.json(data))
   })
 
-  /** GET /api/users? - Get users  req.query.username */
-  router.get('/users/', validate(validation.users), (req, res) => {
-    // TODO Fetch data for users specified in query parse/map data to appropriate structure and return as a JSON array
-    console.log(req.query)
-    axios
-      .get(`https://api.github.com/users/${req.query.username}`, {
-        headers: { Authorization: token }
-      })
-      .then(({ data }) => mapper(data))
-      .then(data => res.json(data))
-  })
+  const getUsers = username => {
+    return axios.get(`https://api.github.com/users/${username}`, {
+      headers: { Authorization: token }
+    })
+  }
 
+  /** GET /api/users? - Get users */
+  router.get('/users/', validate(validation.users), (req, res) => {
+    console.log(req.query)
+    Promise.all([
+      getUsers(req.query.username[0]),
+      getUsers(req.query.username[1])
+    ]).then(([u1, u2]) => {
+      const u1Mapped = mapper(u1.data)
+      const u2Mapped = mapper(u2.data)
+
+      res.json([u1Mapped, u2Mapped])
+    })
+  })
   return router
 }
+
+// map each user to promise
+// users.map(x => getUser(x))
+// map again for for the .thn

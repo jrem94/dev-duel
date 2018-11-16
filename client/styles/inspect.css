@@ -45,3 +45,8 @@ span.username {
 .stat .value {
     justify-content: flex-start;
 }
+
+.avatar {
+    max-width: 300px;
+    max-height: 300px;
+}

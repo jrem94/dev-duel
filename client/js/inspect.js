@@ -23,7 +23,6 @@ $('form').submit(() => {
       // $('.perfect-repos').html(profile.email || 'email: N/A')
       $('.followers').html(profile.followers || 'followers: N/A')
       $('.following').html(profile.following || 'following: N/A')
-
       $('.user-results').removeClass('hide')
     })
     .catch(err => {
