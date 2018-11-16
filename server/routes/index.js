@@ -5,6 +5,7 @@ import token from '../../token'
 import { mapper } from '../lib/mapping'
 
 import validation from './validation'
+import user from './validation/user'
 
 export default () => {
   let router = Router()
@@ -24,25 +25,23 @@ export default () => {
   router.get('/user/:username', validate(validation.user), (req, res) => {
     console.log(req.params.username)
     axios
-      .get('https://api.github.com/users/' + `${req.params.username}`, {
-        headers: {
-          Authorization: token
-        }
+      .get(`https://api.github.com/users/${req.params.username}`, {
+        headers: { Authorization: token }
       })
       .then(({ data }) => mapper(data))
       .then(data => res.json(data))
   })
 
-  /** GET /api/users? - Get users */
+  /** GET /api/users? - Get users  req.query.username */
   router.get('/users/', validate(validation.users), (req, res) => {
-    console.log(req.query)
     // TODO Fetch data for users specified in query parse/map data to appropriate structure and return as a JSON array
-    fetch('https://api.github.com/users/jrem94') // right now goes to my profile
-      .then(response => response.json())
-      .then(data => {
-        console.log(data) // Prints result from `response.json()` in getRequest
+    console.log(req.query)
+    axios
+      .get(`https://api.github.com/users/${req.query.username}`, {
+        headers: { Authorization: token }
       })
-      .catch(error => console.error(error))
+      .then(({ data }) => mapper(data))
+      .then(data => res.json(data))
   })
 
   return router
