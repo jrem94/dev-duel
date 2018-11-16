@@ -23,10 +23,11 @@ $('form').submit(() => {
       // $('.left .perfect-repos').html(profile.email || 'email: N/A')
       $('.left .followers').html(profile.followers || 'followers: N/A')
       $('.left .following').html(profile.following || 'following: N/A')
+      $('.left-score').html(getRoll())
+      console.log($('.left-score').text())
 
       $('.user-results .right').removeClass('hide')
       $('.duel-container').removeClass('hide')
-
       return data[1]
     })
     .then(data => {
@@ -50,10 +51,46 @@ $('form').submit(() => {
       // $('.right .perfect-repos').html(profile.email || 'email: N/A')
       $('.right .followers').html(profile.followers || 'followers: N/A')
       $('.right .following').html(profile.following || 'following: N/A')
+      $('.right-score').html(getRoll())
 
       $('.user-results .right').removeClass('hide')
       $('.duel-container').removeClass('hide')
+
+      compareScores()
     })
 
   return false
 })
+
+const getRoll = () => {
+  const roll = Math.floor(Math.random() * 20) + 1
+  return roll
+}
+
+const compareScores = () => {
+  const leftScore = parseInt($('.left-score').text())
+  const rightScore = parseInt($('.right-score').text())
+  console.log(leftScore)
+  console.log(rightScore)
+
+  if (leftScore > rightScore) {
+    console.log('left!')
+    $('.user-results.right').removeClass('draw')
+    $('.user-results.left').removeClass('draw')
+    $('.user-results.right').removeClass('winner')
+
+    $('.user-results.left').addClass('winner')
+  } else if (rightScore > leftScore) {
+    $('.user-results.right').removeClass('draw')
+    $('.user-results.left').removeClass('draw')
+    $('.user-results.left').removeClass('winner')
+
+    $('.user-results.right').addClass('winner')
+  } else if (leftScore === rightScore) {
+    $('.user-results.left').removeClass('winner')
+    $('.user-results.right').removeClass('winner')
+
+    $('.user-results.right').addClass('draw')
+    $('.user-results.left').addClass('draw')
+  }
+}
