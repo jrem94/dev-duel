@@ -9,20 +9,20 @@ $('form').submit(() => {
       $('.duel-error').addClass('hide')
 
       $('.left .username').html(leftDuelist || 'username: N/A')
-      $('.left .full-name').html(profile.fullname || 'fullname: N/A')
-      $('.left .location').html(profile.location || 'location: N/A')
-      $('.left .email').html(profile.email || 'email: N/A')
-      $('.left .bio').html(profile.bio || 'bio: N/A')
+      $('.left .full-name').text(profile.fullName || 'name: N/A')
+      $('.left .location').text(profile.location || 'location: N/A')
+      $('.left .email').text(profile.email || 'email: N/A')
+      $('.left .bio').text(profile.bio || 'bio: N/A')
       $('.left .avatar').attr('src', profile.avatar)
-      // $('.left .titles').html(profile.email || 'email: N/A')
-      // $('.left .favorite-language').html(profile.email || 'email: N/A')
-      // $('. left .total-stars').html(profile.email || 'email: N/A')
-      // $('.left .most-starred').html(profile.email || 'email: N/A')
-      $('.left .public-repos').html(profile.public_repos || 'public repos: N/A')
-      // $('.left .perfect-repos').html(profile.email || 'email: N/A')
-      $('.left .followers').html(profile.followers || 'followers: N/A')
-      $('.left .following').html(profile.following || 'following: N/A')
-      $('.left-score').html(getRoll())
+      $('.left .titles').text(profile.titles || 'N/A')
+      $('.left .favorite-language').text(profile.favorite_language || 'N/A')
+      $('.left .total-stars').text(profile.total_stars || 0)
+      $('.left .most-starred').text(profile.most_starred || 0)
+      $('.left .public-repos').text(profile.public_repos || 0)
+      $('.left .perfect-repos').text(profile.perfect_repos || 0)
+      $('.left .followers').text(profile.followers || 0)
+      $('.left .following').text(profile.following || 0)
+      $('.left-score').html(calculateScore(profile))
 
       $('.user-results .right').removeClass('hide')
       $('.duel-container').removeClass('hide')
@@ -30,26 +30,23 @@ $('form').submit(() => {
     })
     .then(data => {
       let profile = data
-      console.log(data)
       $('.duel-error').addClass('hide')
 
       $('.right .username').html(rightDuelist || 'username: N/A')
-      $('.right .full-name').html(profile.fullname || 'fullname: N/A')
-      $('.right .location').html(profile.location || 'location: N/A')
-      $('.right .email').html(profile.email || 'email: N/A')
-      $('.right .bio').html(profile.bio || 'bio: N/A')
+      $('.right .full-name').text(profile.fullName || 'name: N/A')
+      $('.right .location').text(profile.location || 'location: N/A')
+      $('.right .email').text(profile.email || 'email: N/A')
+      $('.right .bio').text(profile.bio || 'bio: N/A')
       $('.right .avatar').attr('src', profile.avatar)
-      // $('.right .titles').html(profile.email || 'email: N/A')
-      // $('.right .favorite-language').html(profile.email || 'email: N/A')
-      // $('. right .total-stars').html(profile.email || 'email: N/A')
-      // $('.right .most-starred').html(profile.email || 'email: N/A')
-      $('.right .public-repos').html(
-        profile.public_repos || 'public repos: N/A'
-      )
-      // $('.right .perfect-repos').html(profile.email || 'email: N/A')
-      $('.right .followers').html(profile.followers || 'followers: N/A')
-      $('.right .following').html(profile.following || 'following: N/A')
-      $('.right-score').html(getRoll())
+      $('.right .titles').text(profile.titles || 'N/A')
+      $('.right .favorite-language').text(profile.favorite_language || 'N/A')
+      $('.right .total-stars').text(profile.total_stars || 0)
+      $('.right .most-starred').text(profile.most_starred || 0)
+      $('.right .public-repos').text(profile.public_repos || 0)
+      $('.right .perfect-repos').text(profile.perfect_repos || 0)
+      $('.right .followers').text(profile.followers || 0)
+      $('.right .following').text(profile.following || 0)
+      $('.right-score').html(calculateScore(profile))
 
       $('.user-results .right').removeClass('hide')
       $('.duel-container').removeClass('hide')
@@ -60,8 +57,24 @@ $('form').submit(() => {
   return false
 })
 
+const calculateScore = profile => {
+  const roll = getRoll()
+  let modifiers = 0
+
+  modifiers += parseInt(profile.total_stars / 10)
+  modifiers += parseInt(profile.most_starred / 10)
+  modifiers += parseInt(profile.perfect_repos / 10)
+  modifiers -=
+    (parseInt(profile.public_repos / 10) -
+      parseInt(profile.perfect_repos / 10)) *
+    10
+  modifiers += parseInt(profile.followers / 10)
+
+  return roll + modifiers
+}
+
 const getRoll = () => {
-  const roll = Math.floor(Math.random() * 20) + 1
+  const roll = Math.floor(Math.random() * 100) + 1
   return roll
 }
 

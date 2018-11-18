@@ -3,7 +3,7 @@ body {
     width: 100vw;
     height: 100vh;
 
-    font-family: "Fira Code", serif;
+    font-family: 'Freckle Face', cursive;
 }
 
 .hide {
@@ -30,9 +30,8 @@ main {
     display: flex;
     flex-direction: column;
     height: 90%;
-
     border-radius: 4px;
-    background-color: #FFFFFF;
+    background-image: linear-gradient(to right bottom, #696767, #575453, #454240, #32312e, #20211d);
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
@@ -53,7 +52,7 @@ main > span {
     font-size: 56px;
 
     color: #111;
-    font-family: 'Helvetica Neue', sans-serif;
+    font-family: 'Freckle Face', cursive;
     letter-spacing: 2px;
     line-height: 1;
 }

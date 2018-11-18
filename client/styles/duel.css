@@ -66,12 +66,15 @@ span.username {
     max-height: 200px;
 }
 
-.winner {
-    background-color: green
+.bio {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: ellipsis;
+    max-width: 200px;
 }
 
-.loser {
-    background-color: red
+.winner {
+    background-color: green
 }
 
 .draw {
