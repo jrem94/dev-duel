@@ -2,7 +2,18 @@ $('form').submit(() => {
   const username = $('form input').val()
 
   fetch(`${USER_URL}/${username}`)
-    .then(response => response.json())
+    .then(response => {
+      if (response.status === 400) {
+        throw new Error('HTTP status 400: Bad Request')
+      } else if (response.status === 404) {
+        throw new Error('HTTP status 404: Invalid or Nonexistant User')
+      } else if (response.status > 400 && response.status < 500) {
+        throw new Error('HTTP status in the 400s: Client Error')
+      } else if (response.status >= 500) {
+        throw new Error('HTTP status in the 500s: Server Error')
+      }
+      return response.json()
+    })
     .then(data => {
       const profile = data
       $('.user-error').addClass('hide')
@@ -22,7 +33,7 @@ $('form').submit(() => {
       $('.following').text(profile.following || 0)
       $('.user-results').removeClass('hide')
     })
-    .catch(err => {
+    .catch(error => {
       $('.user-results').addClass('hide')
       $('.user-error').removeClass('hide')
       $('.user-error .error').text(`${error}`)

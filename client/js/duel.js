@@ -3,7 +3,20 @@ $('form').submit(() => {
   const rightDuelist = $('form [name=username-right]').val()
 
   fetch(`${USER_URL}s?username=${leftDuelist}&username=${rightDuelist}`)
-    .then(response => response.json())
+    .then(response => {
+      if (response.status === 400) {
+        throw new Error('HTTP status 400: Bad Request')
+      } else if (response.status === 404) {
+        throw new Error('HTTP status 404: Invalid or Nonexistant User')
+      } else if (response.status > 400 && response.status < 500) {
+        throw new Error('HTTP status in the 400s: Client Error')
+      } else if (response.status >= 500) {
+        throw new Error('HTTP status in the 500s: Server Error')
+      } else if (leftDuelist === rightDuelist) {
+        throw new Error('Identical users detected.')
+      }
+      return response.json()
+    })
     .then(data => {
       let profile = data[0]
       $('.duel-error').addClass('hide')
@@ -53,10 +66,10 @@ $('form').submit(() => {
 
       compareScores()
     })
-    .catch(err => {
+    .catch(error => {
       $('.duel-container').addClass('hide')
       $('.duel-error').removeClass('hide')
-      $('.duel-error .error').text(`${err}`)
+      $('.duel-error .error').text(`${error}`)
     })
 
   return false
