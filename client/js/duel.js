@@ -119,4 +119,12 @@ const compareScores = () => {
     $('.user-results.right').addClass('draw')
     $('.user-results.left').addClass('draw')
   }
+
+  if ($('.user-results.left').hasClass('winner')) {
+    $('.left-victor').removeClass('hide')
+    $('.right-victor').addClass('hide')
+  } else if ($('.user-results.right').hasClass('winner')) {
+    $('.right-victor').removeClass('hide')
+    $('.left-victor').addClass('hide')
+  }
 }
