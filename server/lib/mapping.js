@@ -131,6 +131,12 @@ const getProfile = url => {
       profile.perfect_repos = getPerfectRepos(data)
       return profile
     })
+    .catch(error => {
+      res.json({
+        status: error.response.status,
+        message: error.response.data.message
+      })
+    })
 }
 
 const getAllProfiles = (url, allProfiles) => {

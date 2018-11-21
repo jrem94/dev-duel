@@ -19,13 +19,27 @@ export default () => {
         }
       })
       .then(({ data }) => res.json(data))
+      .catch(error => {
+        res.json({
+          status: error.response.status,
+          message: error.response.data.message
+        })
+      })
   })
 
   router.get('/user/:username', validate(validation.user), (req, res) => {
     let url = `https://api.github.com/users/${req.params.username}`
-    getProfile(url).then(data => res.send(data)).catch(err => {
-      return res.status(err.response.status).json()
-    })
+    getProfile(url)
+      .then(data => res.send(data))
+      .catch(err => {
+        return res.status(err.response.status).json()
+      })
+      .catch(error => {
+        res.json({
+          status: error.response.status,
+          message: error.response.data.message
+        })
+      })
   })
 
   router.get('/users/', validate(validation.users), (req, res, next) => {
@@ -37,8 +51,11 @@ export default () => {
       .then(data => {
         res.send(data)
       })
-      .catch(err => {
-        return res.status(err.response.status).json()
+      .catch(error => {
+        res.json({
+          status: error.response.status,
+          message: error.response.data.message
+        })
       })
   })
   return router

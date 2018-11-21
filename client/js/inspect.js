@@ -24,9 +24,8 @@ $('form').submit(() => {
     })
     .catch(err => {
       $('.user-results').addClass('hide')
-      $('.error').html(err)
       $('.user-error').removeClass('hide')
+      $('.user-error .error').text(`${error}`)
     })
-
   return false
 })

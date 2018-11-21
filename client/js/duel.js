@@ -8,7 +8,7 @@ $('form').submit(() => {
       let profile = data[0]
       $('.duel-error').addClass('hide')
 
-      $('.left .username').html(leftDuelist || 'username: N/A')
+      $('.left .username').text(leftDuelist || 'username: N/A')
       $('.left .full-name').text(profile.fullName || 'name: N/A')
       $('.left .location').text(profile.location || 'location: N/A')
       $('.left .email').text(profile.email || 'email: N/A')
@@ -22,7 +22,7 @@ $('form').submit(() => {
       $('.left .perfect-repos').text(profile.perfect_repos || 0)
       $('.left .followers').text(profile.followers || 0)
       $('.left .following').text(profile.following || 0)
-      $('.left-score').html(calculateScore(profile))
+      $('.left-score').text(calculateScore(profile))
 
       $('.user-results .right').removeClass('hide')
       $('.duel-container').removeClass('hide')
@@ -32,7 +32,7 @@ $('form').submit(() => {
       let profile = data
       $('.duel-error').addClass('hide')
 
-      $('.right .username').html(rightDuelist || 'username: N/A')
+      $('.right .username').text(rightDuelist || 'username: N/A')
       $('.right .full-name').text(profile.fullName || 'name: N/A')
       $('.right .location').text(profile.location || 'location: N/A')
       $('.right .email').text(profile.email || 'email: N/A')
@@ -46,12 +46,17 @@ $('form').submit(() => {
       $('.right .perfect-repos').text(profile.perfect_repos || 0)
       $('.right .followers').text(profile.followers || 0)
       $('.right .following').text(profile.following || 0)
-      $('.right-score').html(calculateScore(profile))
+      $('.right-score').text(calculateScore(profile))
 
       $('.user-results .right').removeClass('hide')
       $('.duel-container').removeClass('hide')
 
       compareScores()
+    })
+    .catch(err => {
+      $('.duel-container').addClass('hide')
+      $('.duel-error').removeClass('hide')
+      $('.duel-error .error').text(`${err}`)
     })
 
   return false
